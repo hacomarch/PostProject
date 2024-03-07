@@ -1,6 +1,5 @@
 package goormton.postappproject.domain.dto;
 
-import goormton.postappproject.domain.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;
