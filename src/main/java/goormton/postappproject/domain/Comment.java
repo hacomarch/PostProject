@@ -22,10 +22,18 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Long commentId, String content, boolean isDeleted, Post post) {
-        this.commentId = commentId;
+    public Comment(String content, boolean isDeleted, Post post) {
         this.content = content;
         this.isDeleted = isDeleted;
         this.post = post;
+        post.getCommentList().add(this);
+    }
+
+    public void update(String content) {
+        this.content = content;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 }

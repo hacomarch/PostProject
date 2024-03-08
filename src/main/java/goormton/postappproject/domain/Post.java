@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,7 @@ public class Post {
     private LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "post")
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
 
     public Post() {
 
@@ -38,12 +39,13 @@ public class Post {
         this.createdDate = createdDate;
     }
 
-    public void delete() {
-        this.isDeleted = true;
-    }
-
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
+
 }

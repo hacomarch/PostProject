@@ -1,6 +1,7 @@
 package goormton.postappproject.service;
 
 import goormton.postappproject.domain.Post;
+import goormton.postappproject.domain.dto.CommentDto;
 import goormton.postappproject.domain.dto.PostDto;
 import goormton.postappproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentService commentService;
 
     @Transactional
     public void save(PostDto dto) {
@@ -41,6 +43,8 @@ public class PostService {
     public void delete(Long id) {
         Post post = postRepository.findById(id);
         post.delete();
+        commentService.deleteAll(post);
+
         postRepository.save(post);
         log.info("=== delete.id {} ===", id);
     }
@@ -71,6 +75,12 @@ public class PostService {
         dto.setContent(post.getContent());
         dto.setCreatedDate(post.getCreatedDate());
         dto.setDeleted(post.isDeleted());
+        List<CommentDto> commentDtoList = post.getCommentList()
+                .stream()
+                .filter(comment -> !comment.isDeleted())
+                .map(commentService::toDto)
+                .toList();
+        dto.setCommentDtoList(commentDtoList);
         return dto;
     }
 
@@ -82,4 +92,5 @@ public class PostService {
                 dto.getCreatedDate()
         );
     }
+
 }
