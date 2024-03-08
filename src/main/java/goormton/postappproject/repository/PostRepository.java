@@ -55,11 +55,4 @@ public class PostRepository {
                 .setMaxResults(page.getPageSize())
                 .getResultList();
     }
-
-    public boolean existsByIdLessThan(Long cursorId) {
-        return em.createQuery("select exists (select 1 from Post p where p.postId < :id)", boolean.class)
-                .setParameter("id", cursorId)
-                .getSingleResult();
-    }
-
 }

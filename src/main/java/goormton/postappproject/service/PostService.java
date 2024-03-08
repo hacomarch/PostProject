@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,18 +58,13 @@ public class PostService {
     }
 
     public List<PostDto> getPagingPosts(Long cursorId, Pageable page) {
-        return getPosts(cursorId, page);
-    }
-
-    private List<PostDto> getPosts(Long id, Pageable page) {
-        if (id == 1L) {
+        if (cursorId == 1L) {
             return postRepository.findAllFirst(page)
                     .stream().map(this::toDto).collect(Collectors.toList());
         }
-        return postRepository.findAllSecond(id, page)
+        return postRepository.findAllSecond(cursorId, page)
                 .stream().map(this::toDto).collect(Collectors.toList());
     }
-
 
     public List<PostDto> findAllPost() {
         log.info("=== findAll ===");

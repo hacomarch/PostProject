@@ -3,7 +3,6 @@ package goormton.postappproject.controller;
 import goormton.postappproject.domain.dto.CommentDto;
 import goormton.postappproject.domain.dto.PostDto;
 import goormton.postappproject.service.CommentService;
-import goormton.postappproject.service.CursorResult;
 import goormton.postappproject.service.PostService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
