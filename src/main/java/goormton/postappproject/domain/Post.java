@@ -27,7 +27,6 @@ public class Post {
     private List<Comment> commentList = new ArrayList<>();
 
     public Post() {
-
     }
 
     public Post(String title, String content, boolean isDeleted, LocalDateTime createdDate) {

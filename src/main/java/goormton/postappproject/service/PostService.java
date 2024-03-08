@@ -3,6 +3,7 @@ package goormton.postappproject.service;
 import goormton.postappproject.domain.Post;
 import goormton.postappproject.domain.dto.CommentDto;
 import goormton.postappproject.domain.dto.PostDto;
+import goormton.postappproject.domain.dto.PostListDto;
 import goormton.postappproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,13 +58,13 @@ public class PostService {
         log.info("=== clear ===");
     }
 
-    public List<PostDto> getPagingPosts(Long cursorId, Pageable page) {
+    public List<PostListDto> getPagingPosts(Long cursorId, Pageable page) {
         if (cursorId == 1L) {
             return postRepository.findAllFirst(page)
-                    .stream().map(this::toDto).collect(Collectors.toList());
+                    .stream().map(this::postListDto).collect(Collectors.toList());
         }
         return postRepository.findAllSecond(cursorId, page)
-                .stream().map(this::toDto).collect(Collectors.toList());
+                .stream().map(this::postListDto).collect(Collectors.toList());
     }
 
     public List<PostDto> findAllPost() {
@@ -77,6 +78,14 @@ public class PostService {
     public PostDto findOne(Long id) {
         log.info("=== findOne.id {} ===", id);
         return toDto(postRepository.findById(id));
+    }
+
+    private PostListDto postListDto(Post post) {
+        PostListDto dto = new PostListDto();
+        dto.setPostId(post.getPostId());
+        dto.setTitle(post.getTitle());
+        dto.setCreatedDate(post.getCreatedDate());
+        return dto;
     }
 
     private PostDto toDto(Post post) {

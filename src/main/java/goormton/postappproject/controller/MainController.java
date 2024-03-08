@@ -2,6 +2,7 @@ package goormton.postappproject.controller;
 
 import goormton.postappproject.domain.dto.CommentDto;
 import goormton.postappproject.domain.dto.PostDto;
+import goormton.postappproject.domain.dto.PostListDto;
 import goormton.postappproject.service.CommentService;
 import goormton.postappproject.service.PostService;
 import jakarta.annotation.PostConstruct;
@@ -24,7 +25,7 @@ public class MainController {
 
     @GetMapping("/post/cursor/{cursorId}")
     @ResponseBody
-    public List<PostDto> getPosts(@PathVariable Long cursorId) {
+    public List<PostListDto> getPosts(@PathVariable Long cursorId) {
         return postService.getPagingPosts(cursorId, PageRequest.of(0, DEFAULT_SIZE));
     }
 
