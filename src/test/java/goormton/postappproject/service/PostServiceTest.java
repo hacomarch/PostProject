@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,7 +81,7 @@ class PostServiceTest {
     void update() {
         PostDto updatePost = postService.findOne(1L);
         updatePost.setTitle("제목 바꿈");
-        postService.update(updatePost);
+        postService.update(updatePost, 1L);
 
         PostDto findPost = postService.findOne(1L);
         assertEquals("제목 바꿈", findPost.getTitle());
@@ -116,7 +115,7 @@ class PostServiceTest {
         findPost.setTitle("삭제된 게시글 수정하기~");
 
         assertThrows(IllegalStateException.class,
-                () -> postService.update(findPost));
+                () -> postService.update(findPost, 1L));
     }
 
     @Test
@@ -147,7 +146,7 @@ class PostServiceTest {
         assertEquals(2, findPost.getCommentDtoList().size());
 
         commentService.delete(2L);
-        postService.update(findPost);
+        postService.update(findPost, 1L);
 
         assertEquals(1, postService.findOne(1L).getCommentDtoList().size());
     }

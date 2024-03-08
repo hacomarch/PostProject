@@ -92,7 +92,7 @@ class CommentServiceTest {
     void update() {
         CommentDto one = commentService.findOne(3L);
         one.setContent("댓글3");
-        commentService.update(one);
+        commentService.update(one, 3L);
 
         assertEquals("댓글3", commentService.findOne(3L).getContent());
     }
