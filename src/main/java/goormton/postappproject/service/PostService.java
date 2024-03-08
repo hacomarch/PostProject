@@ -6,9 +6,12 @@ import goormton.postappproject.domain.dto.PostDto;
 import goormton.postappproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +31,12 @@ public class PostService {
     }
 
     @Transactional
-    public void update(PostDto dto) {
-        if (dto.isDeleted()) {
-            //TODO : 삭제된 게시글 수정할 때 예외 처리
-            throw new IllegalStateException("삭제된 게시글은 수정할 수 없습니다.");
+    public void update(PostDto dto, Long postId) {
+        Post post = postRepository.findById(postId);
+        if (post.isDeleted()) {
+            throw new IllegalStateException("Deleted posts cannot be modified.");
         }
-        Post post = postRepository.findById(dto.getPostId());
+
         post.update(dto.getTitle(), dto.getContent());
         postRepository.save(post);
         log.info("=== update.id {} ===", post.getPostId());
@@ -54,6 +57,20 @@ public class PostService {
         postRepository.clear();
         log.info("=== clear ===");
     }
+
+    public List<PostDto> getPagingPosts(Long cursorId, Pageable page) {
+        return getPosts(cursorId, page);
+    }
+
+    private List<PostDto> getPosts(Long id, Pageable page) {
+        if (id == 1L) {
+            return postRepository.findAllFirst(page)
+                    .stream().map(this::toDto).collect(Collectors.toList());
+        }
+        return postRepository.findAllSecond(id, page)
+                .stream().map(this::toDto).collect(Collectors.toList());
+    }
+
 
     public List<PostDto> findAllPost() {
         log.info("=== findAll ===");
@@ -89,7 +106,7 @@ public class PostService {
                 dto.getTitle(),
                 dto.getContent(),
                 dto.isDeleted(),
-                dto.getCreatedDate()
+                LocalDateTime.now()
         );
     }
 

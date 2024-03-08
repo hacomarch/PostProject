@@ -29,12 +29,12 @@ public class CommentService {
     }
 
     @Transactional
-    public void update(CommentDto dto) {
+    public void update(CommentDto dto, Long commentId) {
         if (dto.isDeleted()) {
             //TODO : 삭제된 댓글 수정하려고 할 때 예외 처리
             throw new IllegalStateException("삭제된 댓글은 수정할 수 없습니다");
         }
-        Comment comment = commentRepository.findById(dto.getCommentId());
+        Comment comment = commentRepository.findById(commentId);
         comment.update(dto.getContent());
         commentRepository.save(comment);
         log.info("=== comment update.id {} ===", comment.getCommentId());

@@ -2,7 +2,6 @@ package goormton.postappproject.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ public class Post {
     private String content;
     private boolean isDeleted;
 
-    @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
